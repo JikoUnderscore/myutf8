@@ -305,7 +305,12 @@ public:
     return (_wmkdir(widen(dirname).c_str()) == 0);
 }
 
-/// \copydoc utf8::mkdir()
+/*!
+  Creates a new directory
+
+  \param dirname UTF-8 path for new directory
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto mkdir(std::string const& dirname) -> bool {
     return (_wmkdir(widen(dirname).c_str()) == 0);
 }
@@ -320,7 +325,12 @@ public:
     return (_wrmdir(widen(dirname).c_str()) == 0);
 }
 
-/// \copydoc utf8::rmdir()
+/*!
+  Deletes a directory
+
+  \param dirname UTF-8 path of directory to be removed
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto rmdir(std::string const& dirname) -> bool {
     return (_wrmdir(widen(dirname).c_str()) == 0);
 }
@@ -336,7 +346,12 @@ public:
     return (_wchdir(widen(dirname).c_str()) == 0);
 }
 
-/// \copydoc utf8::chdir()
+/*!
+  Changes the current working directory
+
+  \param dirname UTF-8 path of new working directory
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto chdir(std::string const& dirname) -> bool {
     return (_wchdir(widen(dirname).c_str()) == 0);
 }
@@ -355,7 +370,16 @@ public:
     return (_wchmod(widen(filename).c_str(), mode) == 0);
 }
 
-/// \copydoc utf8::chmod()
+/*!
+  Changes the file access permissions
+
+  \param filename UTF-8 name of file
+  \param mode access permissions. Or'ed combination of:
+              - _S_IWRITE write permission
+              - _S_IREAD  read permission
+
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto chmod(std::string const& filename, int32_t mode) -> bool {
     return (_wchmod(widen(filename).c_str(), mode) == 0);
 }
@@ -372,13 +396,23 @@ public:
               - 6 read/write permission
 
   \return true if successful, false otherwise
-
 */
 [[nodiscard]] inline auto access(const char* filename, int32_t mode) -> bool {
     return (_waccess(widen(filename).c_str(), mode) == 0);
 }
 
-/// \copydoc utf8::access()
+/*!
+  Determines if a file has the requested access permissions
+
+  \param filename UTF-8 file path of new working directory
+  \param mode required access:
+              - 0 existence only
+              - 2 write permission
+              - 4 read permission
+              - 6 read/write permission
+
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto access(std::string const& filename, int32_t mode) -> bool {
     return (_waccess(widen(filename).c_str(), mode) == 0);
 }
@@ -394,7 +428,12 @@ public:
     return (_wremove(widen(filename).c_str()) == 0);
 }
 
-/// \copydoc utf8::remove()
+/*!
+  Delete a file
+
+  \param filename UTF-8 name of file to be deleted
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto remove(std::string const& filename) -> bool {
     return (_wremove(widen(filename).c_str()) == 0);
 }
@@ -410,7 +449,13 @@ public:
     return (_wrename(widen(oldname).c_str(), widen(newname).c_str()) == 0);
 }
 
-/// \copydoc utf8::rename()
+/*!
+  Rename a file or directory
+
+  \param oldname current UTF-8 encoded name of file or directory
+  \param newname new UTF-8 name
+  \return true if successful, false otherwise
+*/
 [[nodiscard]] inline auto rename(std::string const& oldname, std::string const& newname) -> bool {
     return (_wrename(widen(oldname).c_str(), widen(newname).c_str()) == 0);
 }
@@ -428,7 +473,13 @@ public:
     return h;
 }
 
-/// \copydoc utf8::fopen()
+/*!
+  Open a file
+
+  \param filename UTF-8 encoded file name
+  \param mode access mode
+  \return pointer to the opened file or NULL if an error occurs
+ */
 [[nodiscard]] inline auto fopen(std::string const& filename, std::string const& mode) -> FILE* {
     FILE* h = nullptr;
     _wfopen_s(&h, widen(filename).c_str(), widen(mode).c_str());
@@ -444,13 +495,26 @@ public:
     return valid_str(input_s.c_str(), input_s.size());
 }
 
-/// @copydoc rune()
+/*!
+  Conversion from UTF-8 to UTF-32
+
+  \param ptr pointer to character
+  \return UTF-32 encoded character or utf8::REPLACEMENT_CHARACTER (0xfffd)
+          if it is an invalid UTF-8 encoding
+*/
 [[nodiscard]] inline auto rune(const std::string::const_iterator& p_check) -> char32_t {
     return rune(&(*p_check));
 }
 
 
-/// \copydoc isspace()
+/*!
+  Return true if character is blank(-ish).
+  \param p_check pointer to character to check
+  \return `true` if character is blank, `false` otherwise
+
+  Returns `true` if Unicode character has the "White_Space=yes" property in the
+  [Unicode Character Database](https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt)
+*/
 [[nodiscard]] inline auto isspace(std::string::const_iterator p_check) -> bool {
     return isspace(&*p_check);
 }
@@ -465,7 +529,11 @@ public:
     return (*p_check == ' ' || *p_check == '\t');
 }
 
-/// \copydoc isblank()
+/*!
+  Return true if character is blank or tab
+  \param p_check pointer to character to check
+  \return true if character is blank, false otherwise
+*/
 [[nodiscard]] inline auto isblank(std::string::const_iterator p_check) -> bool {
     return isblank(&*p_check);
 }
@@ -480,7 +548,11 @@ public:
     return '0' <= c && c <= '9';
 }
 
-/// \copydoc isdigit()
+/*!
+  Return true if character is a decimal digit (0-9)
+  \param p_check pointer to character to check
+  \return true if character is a digit, false otherwise
+*/
 [[nodiscard]] inline auto isdigit(std::string::const_iterator p_check) -> bool {
     return isdigit(&*p_check);
 }
@@ -495,7 +567,11 @@ public:
     return ('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z');
 }
 
-/// \copydoc isalnum()
+/*!
+  Return true if character is an alphanumeric character (0-9 or A-Z or a-z)
+  \param p_check pointer to character to check
+  \return true if character is alphanumeric, false otherwise
+*/
 [[nodiscard]] inline auto isalnum(std::string::const_iterator p_check) -> bool {
     return isalnum(&*p_check);
 }
@@ -510,7 +586,8 @@ public:
     return ('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z');
 }
 
-/// \copydoc isalpha()
+/// Return `true` if character is an uppercase character
+/// \param p_char pointer to character to check
 [[nodiscard]] inline auto isalpha(std::string::const_iterator p_check) -> bool {
     return isalpha(&*p_check);
 }
@@ -525,17 +602,23 @@ public:
     return ('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
 }
 
-/// \copydoc isxdigit()
+/*!
+  Return true if character is a hexadecimal digit (0-9 or A-F or a-f)
+  \param p_check pointer to character to check
+  \return true if character is hexadecimal, false otherwise
+*/
 [[nodiscard]] inline auto isxdigit(std::string::const_iterator p_check) -> bool {
     return isxdigit(&*p_check);
 }
 
-/// \copydoc isupper()
+/// Return `true` if character is an uppercase character
+/// \param p_char pointer to character to check
 [[nodiscard]] inline auto isupper(std::string::const_iterator p_check) -> bool {
     return isupper(&*p_check);
 }
 
-/// \copydoc islower()
+/// Return `true` if character is a lowercase character
+/// \param p_char pointer to character to check
 [[nodiscard]] inline auto islower(std::string::const_iterator p_check) -> bool {
     return isupper(&*p_check);
 }
@@ -588,7 +671,6 @@ public:
 ////   end header file   /////////////////////////////////////////////////////
 #endif // INCLUDE_UTF8_HPP_
 
-#define UTF8_IMPLEMENTATION
 
 ////   start impementanion fle   /////////////////////////////////////////////////////
 //
@@ -1054,7 +1136,14 @@ static void encode(char32_t input_char, std::string& input_s);
     return nc;
 }
 
-/// \copydoc utf8::length()
+/*!
+  Counts number of characters in an UTF8 encoded string
+
+  \param input_s UTF8-encoded string
+  \return number of characters in string
+
+  \note Algorithm from http://canonical.org/~kragen/strlen-utf8.html
+*/
 [[nodiscard]] auto length(const char* input_s) -> size_t {
     size_t nc = 0;
     while (*input_s) {
