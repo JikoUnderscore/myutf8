@@ -13,27 +13,31 @@
 
 #ifndef _WINDOWS_
 
-typedef unsigned int UINT;
-typedef unsigned long DWORD;
-typedef const char *LPCCH, *PCCH;
-typedef wchar_t WCHAR; // wc,   16-bit UNICODE character
-typedef WCHAR* LPWSTR;
-typedef const WCHAR *LPCWCH, *PCWCH;
-typedef char* LPSTR;
-typedef int* LPBOOL;
-typedef const WCHAR* LPCWSTR;
+using UINT = unsigned int;
+using DWORD = unsigned long;
+using LPCCH = const char *;
+using PCCH = const char *;
+using WCHAR = wchar_t; // wc,   16-bit UNICODE character
+using LPWSTR = WCHAR *;
+using LPCWCH = const WCHAR *;
+using PCWCH = const WCHAR *;
+using LPSTR = char *;
+using LPBOOL = int *;
+using LPCWSTR = const WCHAR *;
 #define CP_UTF8 65001 // UTF-8 translation
 
-typedef void* HANDLE;
-typedef HANDLE HLOCAL;
+using HANDLE = void *;
+using HLOCAL = HANDLE;
 
-
+extern "C" __declspec(dllimport) 
 int __stdcall MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr, int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar);
+extern "C" __declspec(dllimport) 
 int __stdcall WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar,
                                   LPBOOL lpUsedDefaultChar);
-LPWSTR* __stdcall CommandLineToArgvW(LPCWSTR lpCmdLine, int* pNumArgs);
-LPWSTR __stdcall GetCommandLineW();
-HLOCAL __stdcall LocalFree(HLOCAL hMem);
+                                  
+extern "C" __declspec(dllimport) LPWSTR* __stdcall CommandLineToArgvW(LPCWSTR lpCmdLine, int* pNumArgs);
+extern "C" __declspec(dllimport) LPWSTR __stdcall GetCommandLineW();
+extern "C" __declspec(dllimport) HLOCAL __stdcall LocalFree(HLOCAL hMem);
 
 #endif /* _WINDOWS_ */
 
@@ -46,11 +50,11 @@ struct exception : public std::exception {
     enum reason { invalid_utf8, invalid_char32 };
 
     /// Constructor
-    explicit exception(reason c)
-        : std::exception(c == reason::invalid_utf8     ? "Invalid UTF-8 encoding"
-                         : c == reason::invalid_char32 ? "Invalid code-point value"
+    explicit exception(reason p_cause)
+        : std::exception(p_cause == reason::invalid_utf8     ? "Invalid UTF-8 encoding"
+                         : p_cause == reason::invalid_char32 ? "Invalid code-point value"
                                                        : "Other UTF-8 exception"),
-          cause(c) {
+          cause(p_cause) {
     }
 
     /// What triggered the exception

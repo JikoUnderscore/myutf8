@@ -1,14 +1,60 @@
+///! Write test with `TEST_NOWIN` not defined
+///!
+
 #include <cassert>
 #include <print>
 
 
-// #define TEST_NOWIN
+#define TEST_NOWIN
 
 
 #ifdef TEST_NOWIN
-#include <windows.h> // this is only needed for tests
 #define UTF8_IMPLEMENTATION
 #include "./utf8/utf8.nowin.hpp"
+// this is only needed for tests
+typedef void* LPVOID;
+typedef int BOOL;
+typedef struct _SECURITY_ATTRIBUTES {
+    DWORD nLength;
+    LPVOID lpSecurityDescriptor;
+    BOOL bInheritHandle;
+} SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
+typedef DWORD* LPDWORD;
+typedef unsigned long long ULONG_PTR;
+typedef void* PVOID;
+typedef struct _OVERLAPPED {
+    ULONG_PTR Internal;
+    ULONG_PTR InternalHigh;
+    union {
+        struct {
+            DWORD Offset;
+            DWORD OffsetHigh;
+        } DUMMYSTRUCTNAME;
+        PVOID Pointer;
+    } DUMMYUNIONNAME;
+    HANDLE hEvent;
+} OVERLAPPED, *LPOVERLAPPED;
+
+
+#define GENERIC_READ (0x80000000L)
+#define GENERIC_WRITE (0x40000000L)
+#define GENERIC_EXECUTE (0x20000000L)
+#define GENERIC_ALL (0x10000000L)
+
+#define CREATE_NEW 1
+#define CREATE_ALWAYS 2
+#define OPEN_EXISTING 3
+#define OPEN_ALWAYS 4
+#define TRUNCATE_EXISTING 5
+
+#define FILE_ATTRIBUTE_NORMAL 0x00000080
+
+
+extern "C" __declspec(dllimport) HANDLE __stdcall CreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                                                              DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+#define CreateFile CreateFileW
+extern "C" __declspec(dllimport) BOOL __stdcall ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped);
+extern "C" __declspec(dllimport) BOOL __stdcall CloseHandle(HANDLE hObject);
 #else
 #define UTF8_IMPLEMENTATION
 #include "./utf8/utf8.win.hpp"
