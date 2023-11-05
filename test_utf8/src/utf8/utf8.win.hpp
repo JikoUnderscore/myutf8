@@ -149,8 +149,8 @@ void free_argv(int32_t argc, char** argv);
 [[nodiscard]] auto putenv(std::string const& str) -> bool;
 [[nodiscard]] auto putenv(std::string const& var, std::string const& val) -> bool;
 
-[[nodiscard]] auto symlink(const char* path, const char* link, bool directory) -> bool;
-[[nodiscard]] auto symlink(std::string const& path, std::string const& target, bool directory) -> bool;
+// [[nodiscard]] auto symlink(const char* path, const char* link, bool directory) -> bool;
+// [[nodiscard]] auto symlink(std::string const& path, std::string const& target, bool directory) -> bool;
 
 [[nodiscard]] auto system(std::string const& cmd) -> int32_t;
 
