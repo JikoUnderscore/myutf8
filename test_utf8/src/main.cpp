@@ -5,7 +5,7 @@
 #include <print>
 
 
-#define TEST_NOWIN
+// #define TEST_NOWIN
 
 
 #ifdef TEST_NOWIN
@@ -757,18 +757,19 @@ int main() {
         }
     }
 
-    // TODO: Fix this
     // skip spaces in UTF-8 string
-    // { // skip_spaces
-    //     std::string s{ " \xC2\xA0日本語" };
-    //     auto p = s.begin();
-    //     int blanks = 0;
-    //     while (p != s.end() && utf8::isspace(p)) {
-    //         blanks++;
-    //         ASSERT2(utf8::next(p, s.end()));
-    //     }
-    //     ASSERT_EQ(2, blanks, "skip_spaces"); // both space and "no-break space" are space characters
-    // }
+    { // skip_spaces
+        const char* ccp = (const char*)u8" \xC2\xA0日本語";
+        std::string s{ ccp }; 
+        // std::string s{ " В ж—Ґжњ¬иЄћ" }; 
+        auto p = s.begin();
+        int blanks = 0;
+        while (p != s.end() && utf8::isspace(p)) {
+            blanks++;
+            ASSERT2(utf8::next(p, s.end()));
+        }
+        ASSERT_EQ(2, blanks, "skip_spaces"); // both space and "no-break space" are space characters
+    }
 
 
     // test character classes outside the 0-127 range
