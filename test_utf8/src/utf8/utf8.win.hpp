@@ -49,8 +49,10 @@
 #define NOMINMAX
 #define STRICT
 
+// clang-format off
 #include <windows.h> // first import
 #include <shellapi.h> // second import
+// clang-format on
 
 
 namespace utf8 {
