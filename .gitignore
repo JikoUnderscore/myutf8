@@ -1,0 +1,14 @@
+/test_utf8.sln
+/brelease.ps1
+/build.ps1
+/build_and_run.ps1
+/compile_commands.json
+/cppcheck.bat
+/.cache/
+/.vs/
+/.vscode/
+/.idea/
+/target/
+/test_utf8/test_utf8.vcxproj
+/test_utf8/test_utf8.vcxproj.filters
+/test_utf8/test_utf8.vcxproj.user
