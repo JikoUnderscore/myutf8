@@ -12,16 +12,16 @@
 #define UTF8_IMPLEMENTATION
 #include "./utf8/utf8.nowin.hpp"
 // this is only needed for tests
-typedef void* LPVOID;
-typedef int BOOL;
+using LPVOID = void*;
+using BOOL = int;
 typedef struct _SECURITY_ATTRIBUTES {
     DWORD nLength;
     LPVOID lpSecurityDescriptor;
     BOOL bInheritHandle;
 } SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
-typedef DWORD* LPDWORD;
-typedef unsigned long long ULONG_PTR;
-typedef void* PVOID;
+using LPDWORD = DWORD*;
+using ULONG_PTR = unsigned long long;
+using PVOID = void*;
 typedef struct _OVERLAPPED {
     ULONG_PTR Internal;
     ULONG_PTR InternalHigh;
