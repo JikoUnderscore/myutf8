@@ -49,8 +49,8 @@
 #define NOMINMAX
 #define STRICT
 
-#include <shellapi.h>
-#include <windows.h>
+#include <windows.h> // first import
+#include <shellapi.h> // second import
 
 
 namespace utf8 {
